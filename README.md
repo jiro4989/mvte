@@ -16,6 +16,15 @@ MVTextEditorのGo移植
 
 - parametersのとこに1行テキストを持つ
 - 101codeから4行分のテキストを持って1セット
+- code101のparameters
+  - parameters[2] == 背景色
+    - 0 == ウィンドウ
+    - 1 == 暗くする
+    - 2 == 透明
+  - parameters[3] == ウィンドウ位置
+    - 0 == 上
+    - 1 == 中央
+    - 2 == 下
 
     {
       "code": 101,
