@@ -1,9 +1,11 @@
-# tmpl-go
+# mvte
 
-git cloneしてきてすぐに使う
+MVTextEditorのGo移植
 
-```bash
-git clone https://github.com/jiro4989/tmpl-go
-hub clone jiro4989/tmpl-go
-hub clone tmpl-go
-```
+## 実装方針
+
+- GUIはWebブラウザを使用する
+  - localhostサーバでの実装
+- CLIとしても使える
+- ワンバイナリで動作
+  - HTML, JS, CSSはgo-assetsでうめこむ
