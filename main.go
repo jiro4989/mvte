@@ -10,6 +10,30 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
+type (
+	WindowColor    int
+	WindowPosition int
+)
+
+//go:generate stringer -type=WindowColor
+//go:generate stringer -type=WindowPosition
+
+const (
+	WCWindow WindowColor = iota
+	WCDark
+	WCTransparent
+	WPTop WindowPosition = iota
+	WPMiddle
+	WPBottom
+)
+
+type Message struct {
+	ActorName       string
+	Texts           []string
+	BackgroundColor int
+	WindowPosition  int
+}
+
 // /Hello/:langにハンドルされているHello関数
 func Hello(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	lang := p.ByName("lang") // langパラメーターを取得する
