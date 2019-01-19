@@ -19,6 +19,9 @@ help: ## ドキュメントのヘルプを表示する。
 build: $(SRCS) ## ビルド
 	go build $(LDFLAGS) -o bin/$(APPNAME) .
 
+run: build
+	./bin/$(APPNAME)
+
 install: build ## インストール
 	go install
 
@@ -59,4 +62,4 @@ bootstrap: ## 外部ツールをインストールする
 	done
 	gometalinter --install --update
 
-.PHONY: help build install xbuild archive release lint test clean bootstrap
+.PHONY: help build run install xbuild archive release lint test clean bootstrap

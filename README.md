@@ -9,3 +9,4 @@ MVTextEditorのGo移植
 - CLIとしても使える
 - ワンバイナリで動作
   - HTML, JS, CSSはgo-assetsでうめこむ
+
