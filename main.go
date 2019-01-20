@@ -29,22 +29,22 @@ const (
 )
 
 type Message struct {
-	ActorName       string
-	Body            []string
-	BackgroundColor int
-	WindowPosition  int
+	ActorName      string
+	Body           []string
+	WindowColor    WindowColor
+	WindowPosition WindowPosition
 }
 
 // Settings はMapXXXJSON出力設定
 // See https://qiita.com/aosho235/items/ef7a99396f69442d2cf2
 type Settings struct {
-	ActorNameBracketStart string // アクター名を括る括弧(開き)
-	ActorNameBracketEnd   string // アクター名を括る括弧(閉じ)
-	BodyBracketStart      string // 本文を括る括弧(開き)
-	BodyBracketEnd        string // 本文を括る括弧(閉じ)
-	Indent                string // インデント
-	BracketAlign          bool   // 括弧の位置に揃えるか否か
-	ActorNameColor        int    // アクター名につける色
+	ActorNameBracketStart string         // アクター名を括る括弧(開き)
+	ActorNameBracketEnd   string         // アクター名を括る括弧(閉じ)
+	BodyBracketStart      string         // 本文を括る括弧(開き)
+	BodyBracketEnd        string         // 本文を括る括弧(閉じ)
+	Indent                string         // インデント
+	BracketAlign          bool           // 括弧の位置に揃えるか否か
+	ActorNameColor        ActorNameColor // アクター名につける色
 }
 
 // /Hello/:langにハンドルされているHello関数
@@ -93,6 +93,11 @@ func main() {
 
 	// /ExampleにPOSTリクエストがあったらExample関数にハンドルする
 	router.POST("/Example", Example)
+	router.PATCH("/api/v1/map", Example)       // MapXXX.jsonの更新
+	router.GET("/api/v1/settings", Example)    // ユーザ設定の取得
+	router.POST("/api/v1/settings", Example)   // ユーザ設定の作成
+	router.PATCH("/api/v1/settings", Example)  // ユーザ設定の更新
+	router.DELETE("/api/v1/settings", Example) // ユーザ設定の削除
 
 	// Webサーバーを8080ポートで立ち上げる
 	err := http.ListenAndServe(":8080", router)
