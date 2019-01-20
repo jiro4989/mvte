@@ -1,5 +1,12 @@
 package api
 
+import (
+	"fmt"
+	"io"
+
+	"github.com/jiro4989/tmpl-go/entity"
+)
+
 // WriteSettingsJSON はユーザ設定をファイル出力する
 func WriteSettingsJSON(settings Settings) {
 
@@ -10,32 +17,33 @@ func WriteMapJSON(msgs []Message, settings Settings) {
 
 }
 
-func Example(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
-	defer r.Body.Close() // Example関数が終了する時に実行されるdeferステートメント
+func writeMap(w io.Writer, msgs []entity.Message, settings entity.Settings) {
+	for _, msg := range msgs {
+		// Messageのアクター名を括弧でくくる
+		msg.ActorName = settings.ActorNameBracketStart + msg.ActorName + settings.ActorNameBracketEnd
 
-	// リクエストボディを読み取る
-	bodyBytes, err := ioutil.ReadAll(r.Body)
-	if err != nil {
-		// リクエストボディの読み取りに失敗した => 400 Bad Requestエラー
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
+		// Messageのアクター名の色を変更する
+		colIdx := settings.ActorNameColor
+		if 0 < colIdx {
+			msg.ActorName = surroundColor(msg.ActorName, colIdx)
+		}
 	}
+	// Messageの1行文字列が特定の長さ以上だった場合に改行(配列をわける)
+	// Messageのアクター名とBodyが合わせて4行以上になった場合はMessageを分ける
+	// Bodyを括弧で括る。括る際はインデントを揃える可能性がある
+	// Bodyを括弧で括らない場合もインデントするかも知れない
+	// ファイル出力用のツクールMV規定のJSON構造体に変換する
+	// writerに書き込む
+}
 
-	// JSONパラメーターを構造体にする為の定義
-	type ExampleParameter struct {
-		ID   int    `json:"id"`
-		Name string `json:"name"`
-	}
-	var param ExampleParameter
+// surroundColor は文字列をツクール仕様の色文字で囲う
+// デフォルト色：\c[0]
+// 他：\c[1]
+func surroundColor(s string, n int) string {
+	return fmt.Sprintf(`\c[%d]%s\c[0]`, n, s)
+}
 
-	// ExampleParameter構造体に変換
-	err = json.Unmarshal(bodyBytes, &param)
-	if err != nil {
-		// JSONパラメーターを構造体への変換に失敗した => 400 Bad Requestエラー
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
+// joinMessages は複数のテーブルのテキストを可能な限り結合する。
+func joinMessages(r io.Writer, msgs []entity.Message) {
 
-	// 構造体に変換したExampleParameterを文字列にしてレスポンスに書き込む
-	fmt.Fprintf(w, fmt.Sprintf("%+v\n", param))
 }
