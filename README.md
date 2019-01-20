@@ -20,6 +20,10 @@ MVTextEditorのGo移植
 - parametersのとこに1行テキストを持つ
 - 101codeから4行分のテキストを持って1セット
 - code101のparameters
+  - parameters[0] == 画像ファイル名 string
+    - フルパスではなくてファイル名のみ。拡張子不要
+  - parameters[1] == 背景色
+    - 0〜7
   - parameters[2] == 背景色
     - 0 == ウィンドウ
     - 1 == 暗くする
