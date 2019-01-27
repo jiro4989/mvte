@@ -4,7 +4,8 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/jiro4989/tmpl-go/entity"
+	"github.com/jiro4989/mvte/entity"
+	"github.com/jiro4989/wordwrap"
 )
 
 // WriteSettingsJSON はユーザ設定をファイル出力する
@@ -27,8 +28,15 @@ func writeMap(w io.Writer, msgs []entity.Message, settings entity.Settings) {
 		if 0 < colIdx {
 			msg.ActorName = surroundColor(msg.ActorName, colIdx)
 		}
+
+		// Messageの1行文字列が特定の長さ以上だった場合に改行(配列をわける)
+		var nbd []string
+		for _, bd := range msg.Body {
+			wrap := wordwrap.WordWrapFixedWidth(bd, 5)
+			nbd = append(nbd, wrap)
+		}
+		msg.Body = nbd
 	}
-	// Messageの1行文字列が特定の長さ以上だった場合に改行(配列をわける)
 	// Messageのアクター名とBodyが合わせて4行以上になった場合はMessageを分ける
 	// Bodyを括弧で括る。括る際はインデントを揃える可能性がある
 	// Bodyを括弧で括らない場合もインデントするかも知れない
